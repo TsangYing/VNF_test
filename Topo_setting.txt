@@ -1,1 +1,2 @@
+gcc version 9.3.0 (Ubuntu 9.3.0-17ubuntu1~20.04)
 Topo.exe    node    link    VNF_type    flow_type   amount_of_flow  
