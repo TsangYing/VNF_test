@@ -11,7 +11,6 @@ class node{
         int node_id;
         int level;
         int capacity;//node capacity
-        int procees; //node procees capacity 
         vector<VNF_instance>VNF;// install tpye of VNF in node  
 };
 

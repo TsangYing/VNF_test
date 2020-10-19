@@ -53,7 +53,6 @@ void Topo_node(int x){
         node tmp;
         tmp.node_id = i;
         tmp.capacity = node_capacity;
-        tmp.procees = node_process;
         //tmp.level = rand()%node_level;
         graph_n.push_back(tmp);
     }
@@ -62,9 +61,15 @@ void Topo_node(int x){
     // {
     //     cout<<"node id:"<<graph_n[i].node_id<<" capacity:"<<graph_n[i].capacity<<" procees:"<<graph_n[i].procees<<endl;
     // }
+//--------------------------------
+    for (int i = 0; i < graph_n.size(); i++){
+        cout<<graph_n[i].node_id<<" "<<graph_n[i].capacity<<endl;
+    }
+    cout<<endl;
+    
 } 
 
-void Topo_link(int x){
+void Topo_link(int x){//rand link
     int check_parameter_min  =  graph_n.size()-1;
     int check_parameter_Max  =  graph_n.size()*(graph_n.size()-1)/2;
     if(x<check_parameter_min||x>check_parameter_Max){
@@ -120,14 +125,17 @@ void Topo_link(int x){
         
     }
     
-    
-
-    
 //--------------test--------------
     //     for (int i = 0; i < graph_l.size(); i++)
     // {
     //     cout<<"node id:"<<graph_l[i].id<<" source:"<<graph_l[i].source_node.node_id<<" destination:"<<graph_l[i].destination_node.node_id<<endl;
     // }
+//--------------------------------
+    for (int i = 0; i < graph_l.size(); i++)
+    {
+        cout<<graph_l[i].id<<" "<<graph_l[i].source_node.node_id<<" "<<graph_l[i].destination_node.node_id<<" "<<graph_l[i].bandwidth_capacity<<endl;
+    }
+    cout<<endl;
 } 
 
 void Topo_VNF(int x){
@@ -141,10 +149,16 @@ void Topo_VNF(int x){
         kind_of_VNF.push_back(tmp);
     }
 //--------------test--------------
+    // for (int i = 0; i < kind_of_VNF.size(); i++)
+    // {
+    //      cout<<"VNF id:"<<kind_of_VNF[i].type<<" capacity:"<<kind_of_VNF[i].capacity<<" Max:"<<kind_of_VNF[i].max_limit<<endl;
+    // }
+//--------------------------------
     for (int i = 0; i < kind_of_VNF.size(); i++)
     {
-         cout<<"VNF id:"<<kind_of_VNF[i].type<<" capacity:"<<kind_of_VNF[i].capacity<<" Max:"<<kind_of_VNF[i].max_limit<<endl;
+         cout<<kind_of_VNF[i].type<<" "<<kind_of_VNF[i].capacity<<" "<<kind_of_VNF[i].max_limit<<endl;
     }
+    cout<<endl;
 }
 
 void Topo_flow(int x){
@@ -185,14 +199,25 @@ void Topo_demand(int x){
         amount_of_demand.push_back(tmp);
     } 
 //--------------test--------------
+    // for (int i = 0; i <  amount_of_demand.size(); i++)
+    // {
+    //      cout<<"demand id:"<< amount_of_demand[i].ID<<endl;
+    //      for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
+    //      {
+    //          cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
+    //      }
+    //      cout<<endl<<"bandwidth:"<<amount_of_demand[i].flow.bandwidth<<endl;
+         
+    // }
+//--------------------------------
     for (int i = 0; i <  amount_of_demand.size(); i++)
     {
-         cout<<"flow id:"<< amount_of_demand[i].ID<<endl;
+         cout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.type_demand.size()<<endl;
          for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
          {
              cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
          }
-         cout<<endl<<"bandwidth:"<<amount_of_demand[i].flow.bandwidth<<endl;
+         cout<<endl<<amount_of_demand[i].flow.bandwidth<<endl;
          
     }
 
