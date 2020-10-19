@@ -14,16 +14,25 @@ using namespace std;
 #define node_process  100;
 //#define node_level  5;
 #define link_bandwidth 100;
+#define VNF_type_capacity 10;
+#define VNF_type_max_limit 10;
+#define VNF_type_process 10;
+#define flow_type_max_long 10;
 void Topo_node(int);
 void Topo_link(int);
+void Topo_VNF(int);
+void Topo_flow(int);
+void Topo_demand(int);
 vector<node>graph_n;
 vector<link_non_directionality>graph_l;
-
+vector<VNF_type>kind_of_VNF; //all type of VNF
+vector<flow_type>kind_of_flow; //all type of flow
+vector<flow_instance>amount_of_demand; //Total of demand
 
 int main( void ){   
     unsigned seed;
-    seed = (unsigned)time(NULL); // 取得時間序列
-    srand(seed); // 以時間序列當亂數種子
+    seed = (unsigned)time(NULL); 
+    srand(seed); 
     int node_number;
     int link_number;
     int VNF_type_number;
@@ -32,12 +41,14 @@ int main( void ){
     cin>>node_number>>link_number>>VNF_type_number>>flow_type_number>>amount_of_demand;
     Topo_node(node_number);
     Topo_link(link_number);
-    
+    Topo_VNF(VNF_type_number);
+    Topo_flow(flow_type_number);
+    Topo_demand(amount_of_demand);
     return 0; 
 }
 
 void Topo_node(int x){
-     for (int i = 0; i < x; i++)
+    for (int i = 0; i < x; i++)
     {
         node tmp;
         tmp.node_id = i;
@@ -47,9 +58,9 @@ void Topo_node(int x){
         graph_n.push_back(tmp);
     }
 //--------------test--------------
-    // for (int i = 0; i < graph.size(); i++)
+    // for (int i = 0; i < graph_n.size(); i++)
     // {
-    //     cout<<"node id:"<<graph[i].node_id<<" capacity:"<<graph[i].capacity<<" procees:"<<graph[i].procees<<endl;
+    //     cout<<"node id:"<<graph_n[i].node_id<<" capacity:"<<graph_n[i].capacity<<" procees:"<<graph_n[i].procees<<endl;
     // }
 } 
 
@@ -113,124 +124,76 @@ void Topo_link(int x){
 
     
 //--------------test--------------
-        for (int i = 0; i < graph_l.size(); i++)
-    {
-        cout<<"node id:"<<graph_l[i].id<<" source:"<<graph_l[i].source_node.node_id<<" destination:"<<graph_l[i].destination_node.node_id<<endl;
-    }
+    //     for (int i = 0; i < graph_l.size(); i++)
+    // {
+    //     cout<<"node id:"<<graph_l[i].id<<" source:"<<graph_l[i].source_node.node_id<<" destination:"<<graph_l[i].destination_node.node_id<<endl;
+    // }
 } 
 
-// void Topo_link(int x){
-//     int check_parameter  =  graph_n.size()-1;
-//     if(x<check_parameter){
-//         cout<<"error parameter";
-//         return;
-//     }
+void Topo_VNF(int x){
+    for (int i = 0; i < x; i++)
+    {
+        VNF_type tmp;
+        tmp.type = i;
+        tmp.capacity = VNF_type_capacity;
+        tmp.max_limit = VNF_type_max_limit;
+        tmp.procees = 1+rand()%VNF_type_process;
+        kind_of_VNF.push_back(tmp);
+    }
+//--------------test--------------
+    for (int i = 0; i < kind_of_VNF.size(); i++)
+    {
+         cout<<"VNF id:"<<kind_of_VNF[i].type<<" capacity:"<<kind_of_VNF[i].capacity<<" Max:"<<kind_of_VNF[i].max_limit<<endl;
+    }
+}
 
-//     vector<int>check;
-//     for (int i = 0; i < graph_n.size(); i++)
-//     {
-//         int tmp = i;
-//         check.push_back(tmp);
-//     }
+void Topo_flow(int x){
+    for (int i = 0; i < x; i++)
+    {
+        flow_type tmp;
+        tmp.ID = i;
+        int y = 1+rand()%flow_type_max_long;//long of demand
+        for (int j = 0; j < y; j++)
+        {
+            int z = rand()%kind_of_VNF.size();
+            tmp.type_demand.push_back(kind_of_VNF[z]);
+            tmp.bandwidth+=kind_of_VNF[z].procees;
+        }
+        tmp.bandwidth/=y;
+        kind_of_flow.push_back(tmp);
+    }
+//--------------test--------------
+    // for (int i = 0; i <  kind_of_flow.size(); i++)
+    // {
+    //      cout<<"flow id:"<< kind_of_flow[i].ID<<endl;
+    //      for (int j = 0; j <  kind_of_flow[i].type_demand.size(); j++)
+    //      {
+    //          cout<< kind_of_flow[i].type_demand[j].type<<" ";
+    //      }
+    //      cout<<endl<<"bandwidth:"<<kind_of_flow[i].bandwidth<<endl;
+         
+    // }
+}
 
-//     random_shuffle ( check.begin(), check.end() );
+void Topo_demand(int x){
+   for (int i = 0; i < x; i++)
+    {
+        flow_instance tmp;
+        int y = rand()%kind_of_flow.size();
+        tmp.flow = kind_of_flow[y];
+        tmp.ID =i;
+        amount_of_demand.push_back(tmp);
+    } 
+//--------------test--------------
+    for (int i = 0; i <  amount_of_demand.size(); i++)
+    {
+         cout<<"flow id:"<< amount_of_demand[i].ID<<endl;
+         for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
+         {
+             cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
+         }
+         cout<<endl<<"bandwidth:"<<amount_of_demand[i].flow.bandwidth<<endl;
+         
+    }
 
-//     for(int i=1;i<check.size();i++){
-//         link_non_directionality tmp;
-//         tmp.source_node =  graph_n[i-1];
-//         tmp.destination_node = graph_n[i];
-//         graph_l.push_back(tmp);
-//     }
-
-
-//     for(int i=0;i<x-check_parameter;i++){
-//         int b = rand()%graph_n.size();
-//         int c = rand()%graph_n.size();
-
-//         for (int i = 0; i < graph_l.size(); i++)
-//         {
-            
-//         }
-//         if (b==c)
-//             continue;
-//         else{
-//             link_non_directionality tmp;
-//             tmp.source_node =  graph_n[b];
-//             tmp.destination_node = graph_n[c];
-//             graph_l.push_back(tmp);
-//         }
-
-//     }
-//     bool check_connect = false;
-//     while (check_connect != true)
-//     {
-//         vector<int>check;
-//         for (int i = 0; i < graph_n.size(); i++)
-//         {
-//             int tmp = i;
-//             check.push_back(tmp);
-//         }
-
-
-//         random_shuffle ( check.begin(), check.end() );
-
-        
-
-
-
-
-
-        
-//         int a = 0;
-//         while(a>=x){
-//             int b = rand()%graph_n.size();
-//             int c = rand()%graph_n.size();
-//             for (int i = 0; i < graph_l.size(); i++)
-//             {
-                
-//             }
-            
-
-//             if (b==c)
-//                 continue;
-//             else{
-//                 link_non_directionality tmp;
-//                 tmp.source_node =  graph_n[b];
-//                 tmp.destination_node = graph_n[c];
-//                 graph_l.push_back(tmp);
-//             }
-//         }
-
-//         for (int i = 0; i < graph_l.size(); i++)
-//         {
-//             for (int j = 0; j < check.size(); j++)
-//             {
-//                 if(graph_l[i].source_node.node_id==check[j] || graph_l[i].destination_node.node_id==check[j])
-//                 {
-//                     check[j]=0;
-//                 }
-//             }
-//         }
-
-//         for (int i = 0; i < check.size(); i++)
-//         {
-//             if(check[i]==0){
-//                 continue;
-//                 if(i==check.size()-1)
-//                     check_connect = true;
-//             }
-//             else{
-//                 break;
-//             }
-//         }
-
-
-//     }
-// //--------------test--------------
-//     cout<<"linknumber     soucer    destination";
-//     for (int i = 0; i < graph_l.size(); i++)
-//     {
-//         cout<<i<<"  "<<graph_l[i].source_node.node_id<<"    "<<graph_l[i].destination_node.node_id;
-//     }
-
-// }
+}

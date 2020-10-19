@@ -8,7 +8,6 @@ using namespace std;
 class flow_instance{
     public: 
         flow_type flow ;
-        int bandwidth;
         int ID;
         
 };

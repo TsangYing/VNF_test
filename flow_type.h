@@ -7,7 +7,9 @@ using namespace std;
 
 class flow_type{
     public: 
-        vector<VNF_type>flow_demand;//   
+        int  ID;//
+        int bandwidth;
+        vector<VNF_type>type_demand;//   
 };
 
 
