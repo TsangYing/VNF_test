@@ -44,7 +44,6 @@ int main( void ){
     Topo_node(node_number);
     Topo_link(link_number);
     Topo_VNF(VNF_type_number);
-    //fout<<flow_type_number<<endl;
     Topo_flow(flow_type_number);
     Topo_demand(amount_of_demand);
 
@@ -199,7 +198,7 @@ void Topo_flow(int x){
     ofstream fout("flow.txt");
     for (int i = 0; i <  kind_of_flow.size(); i++)
     {
-         fout<< kind_of_flow[i].ID<<endl;
+         fout<< kind_of_flow[i].ID<<" "<<kind_of_flow[i].type_demand.size()<<endl;
          for (int j = 0; j <  kind_of_flow[i].type_demand.size(); j++)
          {
              fout<< kind_of_flow[i].type_demand[j].type<<" ";
@@ -233,12 +232,7 @@ void Topo_demand(int x){
 ofstream fout("demand.txt");
     for (int i = 0; i <  amount_of_demand.size(); i++)
     {
-         fout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.type_demand.size()<<" ";
-         for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
-         {
-             fout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
-         }
-         fout<<" "<<amount_of_demand[i].flow.bandwidth<<endl;
+         fout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.ID<<endl;
     }
 
 }

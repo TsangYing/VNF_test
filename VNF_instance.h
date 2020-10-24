@@ -6,10 +6,8 @@
 class VNF_instance{
     public:
         VNF_type VNF;
-        int instance_id; //number of instance
-        int node_id;//which node install this VNF    
-        bool enable;
-         
+        int instance_id; //number of instance  
+        int admitted;     
 };
 
 #endif

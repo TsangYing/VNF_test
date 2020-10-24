@@ -9,7 +9,8 @@ class flow_instance{
     public: 
         flow_type flow ;
         int ID;
-        
+        int admitted = 0; 
+        vector<VNF_instance>VNF;
 };
 
 
