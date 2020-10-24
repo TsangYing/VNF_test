@@ -2,12 +2,14 @@
 #include <fstream>
 #include <string>
 #include <algorithm> 
+#include <stdlib.h>
 #include "flow_instance.h"
 #include "flow_type.h"
 #include "link.h"
 #include "node.h"
 #include "VNF_instance.h"
 #include "VNF_type.h"
+
 
 using namespace std;
 #define node_capacity  100;
@@ -28,7 +30,6 @@ vector<link_non_directionality>graph_l;
 vector<VNF_type>kind_of_VNF; //all type of VNF
 vector<flow_type>kind_of_flow; //all type of flow
 vector<flow_instance>amount_of_demand; //Total of demand
-
 int main( void ){   
     unsigned seed;
     seed = (unsigned)time(NULL); 
@@ -38,12 +39,15 @@ int main( void ){
     int VNF_type_number;
     int flow_type_number;
     int amount_of_demand;
+    
     cin>>node_number>>link_number>>VNF_type_number>>flow_type_number>>amount_of_demand;
     Topo_node(node_number);
     Topo_link(link_number);
     Topo_VNF(VNF_type_number);
+    //fout<<flow_type_number<<endl;
     Topo_flow(flow_type_number);
     Topo_demand(amount_of_demand);
+
     return 0; 
 }
 
@@ -57,15 +61,16 @@ void Topo_node(int x){
         graph_n.push_back(tmp);
     }
 //--------------test--------------
-    // for (int i = 0; i < graph_n.size(); i++)
-    // {
-    //     cout<<"node id:"<<graph_n[i].node_id<<" capacity:"<<graph_n[i].capacity<<" procees:"<<graph_n[i].procees<<endl;
+    // for (int i = 0; i < graph_n.size(); i++){
+    //     cout<<graph_n[i].node_id<<" "<<graph_n[i].capacity<<endl;
     // }
-//--------------------------------
+    // cout<<endl;
+//--------------------------------  
+ofstream fout("node.txt");
     for (int i = 0; i < graph_n.size(); i++){
-        cout<<graph_n[i].node_id<<" "<<graph_n[i].capacity<<endl;
+        fout<<graph_n[i].node_id<<" "<<graph_n[i].capacity<<endl;
     }
-    cout<<endl;
+    fout<<endl;
     
 } 
 
@@ -126,16 +131,18 @@ void Topo_link(int x){//rand link
     }
     
 //--------------test--------------
-    //     for (int i = 0; i < graph_l.size(); i++)
+    // for (int i = 0; i < graph_l.size(); i++)
     // {
-    //     cout<<"node id:"<<graph_l[i].id<<" source:"<<graph_l[i].source_node.node_id<<" destination:"<<graph_l[i].destination_node.node_id<<endl;
+    //     cout<<graph_l[i].id<<" "<<graph_l[i].source_node.node_id<<" "<<graph_l[i].destination_node.node_id<<" "<<graph_l[i].bandwidth_capacity<<endl;
     // }
+    // cout<<endl;
 //--------------------------------
+ofstream fout("link.txt");
     for (int i = 0; i < graph_l.size(); i++)
     {
-        cout<<graph_l[i].id<<" "<<graph_l[i].source_node.node_id<<" "<<graph_l[i].destination_node.node_id<<" "<<graph_l[i].bandwidth_capacity<<endl;
+        fout<<graph_l[i].id<<" "<<graph_l[i].source_node.node_id<<" "<<graph_l[i].destination_node.node_id<<" "<<graph_l[i].bandwidth_capacity<<endl;
     }
-    cout<<endl;
+    fout<<endl;
 } 
 
 void Topo_VNF(int x){
@@ -151,14 +158,16 @@ void Topo_VNF(int x){
 //--------------test--------------
     // for (int i = 0; i < kind_of_VNF.size(); i++)
     // {
-    //      cout<<"VNF id:"<<kind_of_VNF[i].type<<" capacity:"<<kind_of_VNF[i].capacity<<" Max:"<<kind_of_VNF[i].max_limit<<endl;
+    //      cout<<kind_of_VNF[i].type<<" "<<kind_of_VNF[i].capacity<<" "<<kind_of_VNF[i].max_limit<<endl;
     // }
+    // cout<<endl;
 //--------------------------------
+ofstream fout("VNF.txt");
     for (int i = 0; i < kind_of_VNF.size(); i++)
     {
-         cout<<kind_of_VNF[i].type<<" "<<kind_of_VNF[i].capacity<<" "<<kind_of_VNF[i].max_limit<<endl;
+         fout<<kind_of_VNF[i].type<<" "<<kind_of_VNF[i].capacity<<" "<<kind_of_VNF[i].max_limit<<endl;
     }
-    cout<<endl;
+    fout<<endl;
 }
 
 void Topo_flow(int x){
@@ -187,6 +196,17 @@ void Topo_flow(int x){
     //      cout<<endl<<"bandwidth:"<<kind_of_flow[i].bandwidth<<endl;
          
     // }
+    ofstream fout("flow.txt");
+    for (int i = 0; i <  kind_of_flow.size(); i++)
+    {
+         fout<< kind_of_flow[i].ID<<endl;
+         for (int j = 0; j <  kind_of_flow[i].type_demand.size(); j++)
+         {
+             fout<< kind_of_flow[i].type_demand[j].type<<" ";
+         }
+         fout<<endl<<kind_of_flow[i].bandwidth<<endl;
+         
+    }
 }
 
 void Topo_demand(int x){
@@ -199,26 +219,26 @@ void Topo_demand(int x){
         amount_of_demand.push_back(tmp);
     } 
 //--------------test--------------
-    // for (int i = 0; i <  amount_of_demand.size(); i++)
-    // {
-    //      cout<<"demand id:"<< amount_of_demand[i].ID<<endl;
-    //      for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
-    //      {
-    //          cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
-    //      }
-    //      cout<<endl<<"bandwidth:"<<amount_of_demand[i].flow.bandwidth<<endl;
+//   for (int i = 0; i <  amount_of_demand.size(); i++)
+//     {
+//          cout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.type_demand.size()<<endl;
+//          for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
+//          {
+//              cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
+//          }
+//          cout<<endl<<amount_of_demand[i].flow.bandwidth<<endl;
          
-    // }
+//     }
 //--------------------------------
+ofstream fout("demand.txt");
     for (int i = 0; i <  amount_of_demand.size(); i++)
     {
-         cout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.type_demand.size()<<endl;
+         fout<< amount_of_demand[i].ID<<" "<<amount_of_demand[i].flow.type_demand.size()<<" ";
          for (int j = 0; j <  amount_of_demand[i].flow.type_demand.size(); j++)
          {
-             cout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
+             fout<< amount_of_demand[i].flow.type_demand[j].type<<" ";
          }
-         cout<<endl<<amount_of_demand[i].flow.bandwidth<<endl;
-         
+         fout<<" "<<amount_of_demand[i].flow.bandwidth<<endl;
     }
 
 }
